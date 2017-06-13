@@ -12,13 +12,13 @@ The main cloud providers (AWS, Azure, Google) all support Kubernetes (generally 
 
 There's an old photography joke about what the best camera is: "the one you have with you" (the one at home is no use).
 
-Likewise, the best cloud provider is whichever one you know best (they __all__ have huge eco-systems).
+Likewise, the best cloud provider is whichever one you know best.
 
-So learning each providers set of offerings is definitely a non-trivial exercise.
+They __all__ have huge eco-systems so learning each providers set of offerings is definitely a non-trivial exercise.
 
-My read on things is that AWS is the leader and likely to stay that way; Azure is the corporate choice for the MS world; and Google is defintely a late-comer but cannot be too heavily discounted (or ignored). Fo one thing, the presence of Google has led everyone to discount their prices (which is probably not a bad thing).
+My read on things is that __AWS__ is the leader and likely to stay that way; __Azure__ is the corporate choice for the MS world; and __Google__ is definitely a late-comer but cannot be too heavily discounted (or ignored). For one thing, the presence of Google has led everyone to discount their prices (which is probably not a bad thing).
 
-So in the end overall cost is probably not a good criterion, as the charges are likely to continue to go down.
+So in the end overall cost is probably not a good criterion as the charges are likely to continue to go down.
 
 ## Running in the Cloud versus running locally
 
@@ -36,19 +36,23 @@ Using these will eat into your free credits, so remember to tear everything down
 
 As with __Docker__ it is possible to run __Kubernetes__ locally, which definitely has some advantages.
 
-For one thing, all of the cloud providers have extensive (and very cluttered) dashboards whereas the command "__minikube dashboard__" will pop open a browser populated with a more minimal and less cluttered dashboard (making it much easier to see what is going on).
+For one thing, all of the cloud providers have extensive (and very cluttered) dashboards whereas the command _'__minikube dashboard__'_ will pop open a browser populated with a much less cluttered dashboard (making it much easier to see what is going on).
 
 ## Tools
 
 There are 3 main tools, __kubeadm__, __kubectl__, and __minikube__.
 
-For setting up __local__ clusters, __kubeadm__ is probably useful.
+For setting up __local__ clusters or for provisioning VMs, __kubeadm__ is probably useful.
 
 However, for dealing with cloud providers (such as AWS, Azure, Google) it is probably not needed.
 
 Having dabbled with all 3 of the listed providers, I can say definitely that it is not necessary to install __kubectl__ locally either.
 
-But for local familiarization, __minikube__ is the way to go - and it requires __kubectl__.
+[Each of the cloud providers recommends that you install their command-line toolset, which definitely make a lot of things simpler, however it ___should___ be possible to perform all needed functions from a web interface (naviagting said web interface is generally non-trivial however).]
+
+For local familiarization, __minikube__ is the way to go - and it requires __kubectl__.
+
+[Minikube is really the local equivalent of a cloud providers command-line toolset.]
 
 Using __minikube__ requires installing some form of virtualization, for linux either __VirtualBox__ or __KVM__ [I chose VirtualBox].
 
