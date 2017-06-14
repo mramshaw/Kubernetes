@@ -46,15 +46,15 @@ For setting up local clusters or for provisioning VMs, __kubeadm__ is probably u
 
 However, for dealing with cloud providers (such as AWS, Azure, GCP) it is probably not needed.
 
-Having dabbled with all 3 of the listed providers, I can say definitely that it is not necessary to install __kubectl__ locally either.
+Having dabbled with all 3 of the listed providers, I can confirm that it is not necessary to install __kubectl__ locally either.
 
-[Each of the cloud providers recommends that you install their command-line toolset, which definitely make a lot of things simpler, however it ___should___ be possible to perform all needed functions from a web interface (navigating said dashboard is generally non-trivial however).]
+[Each of the cloud providers recommends that you install their command-line toolset, which definitely make a lot of things simpler, however it ___should___ be possible to perform all needed functions from a web interface (navigating said dashboard is generally non-trivial however). When operating in the cloud you will use a provided kubectl, so no need to have it installed locally.]
 
 For local familiarization, __minikube__ is the way to go - and it requires __kubectl__.
 
 [Minikube is really the local equivalent of a cloud providers command-line toolset.]
 
-Using __minikube__ requires installing some form of virtualization; for linux either __VirtualBox__ or __KVM__ [I chose VirtualBox].
+Using __minikube__ also requires installing some form of virtualization; for linux either __VirtualBox__ or __KVM__ [I chose VirtualBox].
 
 Using either of these probably requires enabling either __VT-x__ or __AMD-v__ hardware virtualization in your __BIOS__.
 
