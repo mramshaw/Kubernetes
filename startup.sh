@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Define Coogle Cloud region (US West alternate) ..."
+echo "Define Google Cloud region (US West alternate) ..."
 gcloud config set compute/zone us-west1-b
 
 echo " "
