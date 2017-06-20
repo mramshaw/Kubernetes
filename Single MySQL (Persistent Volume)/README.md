@@ -22,6 +22,7 @@ The MySQL deployment will be simply configured with a password, this is obviousl
 
 	$ chmod +x AWS_startup.sh AWS_teardown.sh
 OR
+
 	$ chmod +x GCE_startup.sh GCE_teardown.sh
 
 ## Startup
