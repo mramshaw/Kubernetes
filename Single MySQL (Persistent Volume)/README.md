@@ -91,3 +91,5 @@ Note the __Volume ID__ (there may be more than one, note the one created earlier
 ## Credits
 
 Based on https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/
+
+[Worth a read for some of the finer details of configuring a stateful Kubernetes deployment.]
