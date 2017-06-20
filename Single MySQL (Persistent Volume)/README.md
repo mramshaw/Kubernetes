@@ -32,7 +32,7 @@ OR
 
 	$ aws ec2 create-volume --availability-zone us-west-2b --size 10 --volume-type gp2
 
-Note the __Volume ID__, then edit __mysql-pv-aws.yaml__ to use that volume (vol-0dbb9dabe24069164 in the example).
+Note the __Volume ID__, then edit __mysql-pv-aws.yaml__ to use that volume (vol-xxxxxxxx in the example).
 
 	$ ./AWS_startup.sh
 
@@ -44,6 +44,8 @@ Note the __Volume ID__, then edit __mysql-pv-aws.yaml__ to use that volume (vol-
 
 ## Testing
 
+It may take a while for things to spin up, repeat the next command until there is a I.P. address:
+
 	$ kubectl get pods -l app=mysql -o wide
 
 [Note the __IP address__ for use below.]
@@ -52,7 +54,7 @@ Note the __Volume ID__, then edit __mysql-pv-aws.yaml__ to use that volume (vol-
 	If you don't see a command prompt, try pressing enter.
 	mysql> \s
 	--------------
-	mysql  Ver 14.14 Distrib 5.6.36, for Linux (x86_64) using  EditLine wrapper
+	mysql  Ver 14.14 Distrib 5.7.18, for Linux (x86_64) using  EditLine wrapper
 
 	< ... >
 
@@ -63,7 +65,11 @@ Optional:
 
 	$ kubectl describe deployment mysql
 
+	$ kubectl get pvc mysql-pv-claim
+
 	$ kubectl describe pvc mysql-pv-claim
+
+	$ kubectl get pv mysql-pv
 
 	$ kubectl describe pv mysql-pv
 
