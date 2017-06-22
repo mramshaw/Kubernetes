@@ -32,9 +32,13 @@ echo "Getting persistent volumes (BOUND) ..."
 kubectl get pv
 
 echo " "
-echo "Creating local nginx ..."
-kubectl create -f ./local-pv-nginx.yaml
+echo "Creating local nginx pod ..."
+kubectl create -f ./local-pv-pod.yaml
 
 echo " "
 echo "Getting pods ..."
 kubectl get pods -o wide
+
+echo " "
+echo "Repeat the following command until pod shows as 'Running':"
+echo "'kubectl get pods -o wide'"

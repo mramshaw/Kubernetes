@@ -61,3 +61,18 @@ Using either of these probably requires enabling either __VT-x__ or __AMD-v__ ha
 [Don't worry, the minikube startup process will tell you if this setting needs to be enabled or not. Hopefully not.]
 
 [In my BIOS this was __Advanced__ -> __CPU Configuration__ -> __Intel Virtualization Technology__]
+
+## My Projects
+
+These are not in the same order that I went through them, as I progressed I had to backtrack from time to time (when I needed some more foundation on basic concepts) but the order below corresponds to what I would think is the difficulty level; in other words the order presented is the order to follow.
+
+They all require __kubectl__, and __minikube__.
+
+	Persistent Volume (Local)		https://github.com/mramshaw/Kubernetes/tree/master/Persistent%20Volume%20(Local)
+
+The following also require a __cloud provider__ account with its __CLI tools__ installed.
+
+	Single MySQL (Persistent Volume)	https://github.com/mramshaw/Kubernetes/tree/master/Single%20MySQL%20(Persistent%20Volume)
+
+	Replicated MySQL (Dynamic Volumes)
+

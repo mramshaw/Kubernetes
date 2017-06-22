@@ -3,8 +3,6 @@ kind: Pod
 metadata:
   name: local-pv-pod
 spec:
-  selector:
-    app: nginx
   volumes:
     - name: local-pv-storage
       persistentVolumeClaim:

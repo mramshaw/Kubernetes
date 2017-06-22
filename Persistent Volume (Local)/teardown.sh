@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Deleting local nginx ..."
-kubectl delete -f local-pv-nginx.yaml
+echo "Deleting local nginx pod ..."
+kubectl delete -f local-pv-pod.yaml
 
 echo " "
 echo "Deleting local persistent volume claim ..."
@@ -12,7 +12,7 @@ echo "Deleting local persistent volume ..."
 kubectl delete -f local-pv.yaml
 
 echo " "
-echo "Deleting cloud-local directory and index.html ..."
+echo "Deleting local directory and index.html ..."
 minikube ssh <<EOF
 rm -rf /tmp/data
 exit

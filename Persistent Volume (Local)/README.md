@@ -11,7 +11,7 @@ Kubernetes has the abstraction of a persistent volume claim (__pvc__) to request
 ## Prerequisites
 
 * __kubectl__ installed.
-* [Optional] __minikube__ installed.
+* __minikube__ installed.
 
 ## Preparation
 
@@ -26,18 +26,6 @@ Kubernetes has the abstraction of a persistent volume claim (__pvc__) to request
 It may take some time for things to spin up, repeat the next command until __local-pv-pod__ shows as __Running__:
 
 	$ kubectl get pods -o wide
-
-#### Nginx
-
-	$ kubectl expose pod local-pv-pod --port=80 --type=LoadBalancer
-
-	$ kubectl describe service local-pv-pod
-
-	$ minikube service local-pv-pod
-
-	$ kubectl delete service local-pv-pod
-
-#### Curl
 
 Install curl for testing:
 
@@ -54,7 +42,7 @@ Use curl to test our local nginx:
 	<h1>Hello from Kubernetes storage</h1>
 	root@local-pv-pod:/# exit
 
-#### Optional:
+Optional:
 
 	$ kubectl describe pod local-pv-pod
 
@@ -66,13 +54,18 @@ Use curl to test our local nginx:
 
 	$ kubectl describe pv local-pv
 
-	$ kubectl annotate pv -f local-pv-annotate.yaml
+	$ kubectl annotate pv local-pv pv.beta.kubernetes.io/gid=1234
 
 	$ kubectl describe pv local-pv
 
 ## Teardown
 
 	$ teardown.sh
+
+## Versions
+
+* kubectl	__v1.6.4__
+* minikube	__v0.20.0__
 
 ## Credits
 
