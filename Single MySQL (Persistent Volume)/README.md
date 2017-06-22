@@ -88,6 +88,13 @@ Note the __Volume ID__ (there may be more than one, note the one created earlier
 
 [Again, shorter than AWS as it's easier to script with a __pdName__ than a __volumeId__.]
 
+## Versions
+
+* aws		__1.11.13__
+* gcloud	__159.0.0__
+* kubectl	__v1.6.4__
+* minikube	__v0.20.0__
+
 ## Credits
 
 Based on https://kubernetes.io/docs/tasks/run-application/run-single-instance-stateful-application/
