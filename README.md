@@ -20,6 +20,10 @@ My read on things is that __AWS__ is the leader and likely to stay that way; __A
 
 So in the end overall cost is probably not a good criterion as the charges are likely to continue to go down.
 
+#### Azure and Firefox
+
+If you use __firefox__ as your browser, you will need to add a popup exception for __portal.azure.com__ to allow it to open pop-up windows, otherwise Azure's Cloud Shell window will not open (I have left feedback so perhaps this will be fixed).
+
 ## Running in the Cloud versus running locally
 
 The cloud providers listed all provide either free credits or free services (presumably for evaluation purposes).
@@ -64,14 +68,13 @@ Using either of these probably requires enabling either __VT-x__ or __AMD-v__ ha
 
 ## My Projects
 
-These are not in the same order that I went through them, as I progressed I had to backtrack from time to time (when I needed some more foundation on basic concepts) but the order below corresponds to what I would think is the difficulty level; in other words the order presented is the order to follow.
+These are not in the same order that I went through them, as I progressed I had to backtrack from time to time (when I needed a better grounding on basic concepts) but the order below corresponds to what I think is the difficulty level; in other words the order presented is the order to follow.
 
-They all require __kubectl__, and __minikube__.
+These all require __kubectl__ and __minikube__.
 
 #### Persistent Volume (Local)
 
 https://github.com/mramshaw/Kubernetes/tree/master/Persistent%20Volume%20(Local)
-
 
 The following also require a __cloud provider__ account with its __CLI tools__ installed.
 
