@@ -10,7 +10,7 @@ The MySQL instances will be configured __without passwords__, this is obviously 
 
 ## Prerequisites
 
-* Cloud (GCP) account, command-line tools (__aws__ or __gcloud__) installed.
+* Cloud (GCP) account, command-line tools (__gcloud__) installed.
 * Cloud regions or zones specified for local command-line use.
 * Cloud credentials stored for local command-line use.
 * __kubectl__ installed.
@@ -28,9 +28,11 @@ If using __minikube__ it will almost certainly be necessary to allocate a larger
 
 It will also be a very good idea to increase the limits of the underlying __virtual machine__.
 
-In general, rather than run containers on virtual machines _in a virtual machine_, it is probably a better idea to run this exercise in the cloud. With multiple levels of abstraction it can be very hard to grok what is going on, hardware limitations will probably create lots of restarts - probably due to hardware limitiations.
+In general, rather than run containers on virtual machines _in a virtual machine_, it is probably a better idea to run this exercise in the cloud. With multiple levels of abstraction it can be very hard to grok what is going on, hardware limitations will probably create lots of restarts simply due to hardware limitations, which will make debugging configuration errors all that much harder.
 
 ## Startup
+
+Run the startup script:
 
 #### GCE
 
@@ -113,7 +115,7 @@ Now query the replicated __mysql-read-only__ to verify that the data just insert
 	+---------+
 	$
 
-And now query the replicated __mysql-read-only__ to verify that the load-balancing works as expected (Ctrl-C to end):
+Query the replicated __mysql-read-only__ to verify that the load-balancing works as expected (Ctrl-C to end):
 	
 	$ kubectl run -it --rm --image=mysql:5.7 mysql-client --restart=Never -- bash -ic "while sleep 1; do mysql -h mysql-read-only -e 'SELECT @@server_id,NOW()'; done"
 	If you don't see a command prompt, try pressing enter.
@@ -136,11 +138,6 @@ And now query the replicated __mysql-read-only__ to verify that the load-balanci
 	| @@server_id | NOW()               |
 	+-------------+---------------------+
 	|         100 | 2017-06-27 23:12:33 |
-	+-------------+---------------------+
-	+-------------+---------------------+
-	| @@server_id | NOW()               |
-	+-------------+---------------------+
-	|         101 | 2017-06-27 23:12:34 |
 	+-------------+---------------------+
 	^C
 	$
@@ -190,9 +187,9 @@ Delete the second replica and watch __kubernetes__ recreate it (Ctrl-C to end):
 
 ## Teardown
 
-#### GCE
+Run the teardown script:
 
-	$ ./GCE_teardown.sh
+#### GCE
 
 	$ ./GCE_teardown.sh 
 	Deleting MySQL stateful set ...
@@ -219,7 +216,7 @@ Delete the second replica and watch __kubernetes__ recreate it (Ctrl-C to end):
 	Do you want to continue (Y/n)?  Y
 	
 	Deleting cluster mysql-replicated...done.
-	Deleted [https://container.googleapis.com/ ... /mysql-replicated].
+	Deleted [https ... mysql-replicated].
 
 Optionally, open another console and watch the teardown (Ctrl-C to end):
 
@@ -251,7 +248,6 @@ Optionally, open another console and watch the teardown (Ctrl-C to end):
 
 ## Versions
 
-* aws		__1.11.13__
 * gcloud	__159.0.0__
 * kubectl	__v1.6.4__
 * minikube	__v0.20.0__
