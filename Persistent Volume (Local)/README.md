@@ -60,7 +60,7 @@ Optional:
 
 ## Teardown
 
-	$ teardown.sh
+	$ ./teardown.sh
 
 ## Versions
 
