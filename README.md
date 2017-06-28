@@ -20,9 +20,13 @@ My read on things is that __AWS__ is the leader and likely to stay that way; __A
 
 So in the end overall cost is probably not a good criterion as the charges are likely to continue to go down.
 
+#### AWS
+
+It does not seem to be that easy to create a __Kubernetes__ cluster with AWS. While there are __kops__ and __kube-aws__, which seem to be actively supported and full-featured, it is a concern that there is no AWS-native tooling.
+
 #### Azure and Firefox
 
-If you use __firefox__ as your browser, you will need to add a popup exception for __portal.azure.com__ to allow it to open pop-up windows, otherwise Azure's Cloud Shell window will not open (I have left feedback so perhaps this will be fixed).
+If you use __firefox__ as your browser, you will need to add a popup exception for __portal.azure.com__ to allow it to open pop-up windows, otherwise Azure's Cloud Shell window will not open (I have left feedback so perhaps this will be fixed). It does not seem to be possible to paste into the Cloud Shell window either, which is annoying.
 
 ## Running in the Cloud versus running locally
 
@@ -79,7 +83,10 @@ https://github.com/mramshaw/Kubernetes/tree/master/Persistent%20Volume%20(Local)
 The following also require a __cloud provider__ account with its __CLI tools__ installed.
 
 #### Single MySQL (Persistent Volume)
+
 https://github.com/mramshaw/Kubernetes/tree/master/Single%20MySQL%20(Persistent%20Volume)
 
 #### Replicated MySQL (Dynamic Volumes)
+
+https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)
 
