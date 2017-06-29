@@ -32,11 +32,11 @@ In general, rather than run containers on virtual machines _in a virtual machine
 
 #### GCP
 
-	Pod |  Type  | CPU (cores) usage | Memory usage
-	--- | ------ | ----------------- | ------------
-	mysql-0	| Master | 0.002 | 302.512 Mi
-	mysql-1	| Slave | 0.001 | 203.059 Mi
-	mysql-2	| Slave | 0.001 | 203.621 Mi
+Pod |  Type  | CPU (cores) usage | Memory usage
+--- | ------ | ----------------- | ------------
+mysql-0	| Master | 0.002 | 302.512 Mi
+mysql-1	| Slave | 0.001 | 203.059 Mi
+mysql-2	| Slave | 0.001 | 203.621 Mi
 
 ## Startup
 
@@ -113,7 +113,7 @@ Insert some data into the master __mysql__:
 	
 	mysql> exit
 
-Now query the replicated __mysql-read-only__ to verify that the data just inserted has indeed been propogated:
+Now query the replicated __mysql-read-only__ to verify that the data just inserted has indeed been propagated:
 	
 	$ kubectl run -it --rm --image=mysql:5.7 mysql-client --restart=Never -- mysql -h mysql-read-only -e "SELECT * FROM test.messages"
 	+---------+
@@ -152,7 +152,7 @@ Query the replicated __mysql-read-only__ to verify that the load-balancing works
 
 #### Simulating downtime
 
-Break the mysql __readiness probe__ in the second replica:
+Break the MySQL __readiness probe__ in the second replica:
 
 	kubectl exec mysql-2 -c mysql -- mv /usr/bin/mysql /usr/bin/mysql.off
 
@@ -160,7 +160,7 @@ Verify that the __READY__ status of the second replica has transitioned to __1/2
 
 	kubectl get pod mysql-2
 
-Fix the mysql __readiness probe__:
+Fix the MySQL __readiness probe__:
 
 	kubectl exec mysql-2 -c mysql -- mv /usr/bin/mysql.off /usr/bin/mysql
 
@@ -334,7 +334,7 @@ As the reclaim policy is __Delete__ (the default value) for the persistent volum
 	persistentvolumeclaim "data-mysql-4" deleted
 	$
 
-Verify that the underlying persistent volumes are deleted as expected (notice how the persistent volumes transition to __Released__ status first [this is a timing thing and may not always be apparent]):
+Verify that the underlying persistent volumes are deleted as expected (notice how the persistent volumes transition to __Released__ status first [this is a timing thing and may not always be evident]):
 
 	$ kubectl get pv
 	NAME        CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS     CLAIM                  STORAGECLASS   REASON    AGE
