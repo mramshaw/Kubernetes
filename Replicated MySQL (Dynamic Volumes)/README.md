@@ -30,6 +30,14 @@ It will also be a very good idea to increase the limits of the underlying __virt
 
 In general, rather than run containers on virtual machines _in a virtual machine_, it is probably a better idea to run this exercise in the cloud. With multiple levels of abstraction it can be very hard to grok what is going on, hardware limitations will probably create lots of restarts simply due to hardware limitations, which will make debugging configuration errors all that much harder.
 
+#### GCP
+
+	Pod |  Type  | CPU (cores) usage | Memory usage
+	--- | ------ | ----------------- | ------------
+	mysql-0	| Master | 0.002 | 302.512 Mi
+	mysql-1	| Slave | 0.001 | 203.059 Mi
+	mysql-2	| Slave | 0.001 | 203.621 Mi
+
 ## Startup
 
 Run the startup script:
@@ -185,6 +193,167 @@ Delete the second replica and watch __kubernetes__ recreate it (Ctrl-C to end):
 	^C
 	$
 
+#### Simulate a network outage (drain the node)
+
+Determine the __node__ of the second replica:
+
+	$ kubectl get pod mysql-2 -o wide
+	NAME      READY     STATUS    RESTARTS   AGE       IP          NODE
+	mysql-2   2/2       Running   0          16m       10.60.1.6   gke-mysql-replicated-default-pool-1...
+	$
+
+Drain the second replica node and watch __kubernetes__ relocate the pod (Ctrl-C to end):
+
+	$ kubectl drain gke-mysql-replicated-default-pool-1... --force --delete-local-data --ignore-daemonsets && kubectl get pod mysql-2 -o wide --watch
+	node "gke-mysql-replicated-default-pool-1..." cordoned
+	WARNING: Deleting pods with local storage: mysql-2; Ignoring DaemonSet-managed pods: fluentd-gcp-v2.0-...; Deleting pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet: kube-proxy-gke-mysql-replicated-default-pool-1...
+	pod "mysql-2" evicted
+	node "gke-mysql-replicated-default-pool-1..." drained
+	NAME      READY     STATUS     RESTARTS   AGE       IP        NODE
+	mysql-2   0/2       Init:0/2   0          1s        <none>    gke-mysql-replicated-default-pool-2...
+	mysql-2   0/2       Init:1/2   0         18s       10.60.4.13   gke-mysql-replicated-default-pool-2...
+	mysql-2   0/2       PodInitializing   0         29s       10.60.4.13   gke-mysql-replicated-default-pool-2...
+	mysql-2   1/2       Running   0         30s       10.60.4.13   gke-mysql-replicated-default-pool-2...
+	mysql-2   2/2       Running   0         40s       10.60.4.13   gke-mysql-replicated-default-pool-2...
+	^C
+	$
+
+Uncordon the original node:
+
+	$ kubectl uncordon gke-mysql-replicated-default-pool-1...
+	node "gke-mysql-replicated-default-pool-1..." uncordoned
+	$
+
+#### Simulate a flash crowd (or flash crowd departure)
+
+Scale up the number of replicas (note that the instances are created in order):
+
+	$ kubectl scale --replicas=5 statefulset mysql
+	statefulset "mysql" scaled
+	$
+
+Watch the replicas get scaled up (Ctrl-C to end):
+
+	$ kubectl get pods -l app=mysql --watch
+	NAME      READY     STATUS    RESTARTS   AGE
+	mysql-0   2/2       Running   0          1h
+	mysql-1   2/2       Running   0         1h
+	mysql-2   2/2       Running   0         4m
+	mysql-3   0/2       Init:0/2   0         13s
+	mysql-3   0/2       Init:1/2   0         18s
+	mysql-3   0/2       Init:1/2   0         19s
+	mysql-3   0/2       PodInitializing   0         27s
+	mysql-3   1/2       Running   0         28s
+	mysql-3   2/2       Running   0         37s
+	mysql-4   0/2       Pending   0         0s
+	mysql-4   0/2       Pending   0         0s
+	mysql-4   0/2       Pending   0         8s
+	mysql-4   0/2       Init:0/2   0         8s
+	mysql-4   0/2       Init:1/2   0         26s
+	mysql-4   0/2       Init:1/2   0         27s
+	mysql-4   0/2       PodInitializing   0         35s
+	mysql-4   1/2       Running   0         36s
+	mysql-4   2/2       Running   0         48s
+	^C
+	$
+
+Check the third replica (mysql-3.mysql):
+
+	$ kubectl run -it --rm --image=mysql:5.7 mysql-client --restart=Never -- mysql -h mysql-3.mysql -e "SELECT * FROM test.messages"
+	+----------+
+	| message  |
+	+----------+
+	| hello    |
+	+----------+
+	$
+
+Check the fourth replica (mysql-4.mysql):
+
+	$ kubectl run -it --rm --image=mysql:5.7 mysql-client --restart=Never -- mysql -h mysql-4.mysql -e "SELECT * FROM test.messages"
+	+----------+
+	| message  |
+	+----------+
+	| hello    |
+	+----------+
+	$
+
+Scaling back down again is also seamless (note that the instances are terminated in reverse order):
+
+	$ kubectl scale --replicas=3 statefulset mysql && kubectl get pods -l app=mysql --watch
+	statefulset "mysql" scaled
+	NAME      READY     STATUS    RESTARTS   AGE
+	mysql-0   2/2       Running   0          1h
+	mysql-1   2/2       Running   0         1h
+	mysql-2   2/2       Running   0         11m
+	mysql-3   2/2       Running   0         7m
+	mysql-4   2/2       Terminating   0         6m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-4   0/2       Terminating   0         7m
+	mysql-3   2/2       Terminating   0         8m
+	mysql-3   2/2       Terminating   0         8m
+	mysql-3   0/2       Terminating   0         8m
+	mysql-3   0/2       Terminating   0         8m
+	mysql-3   0/2       Terminating   0         8m
+	mysql-3   0/2       Terminating   0         8m
+	mysql-3   0/2       Terminating   0         8m
+	^C
+	$
+
+Notice that dynamic persistent volumes claims persist after their pods are scaled down:
+
+	$ kubectl get pvc -l app=mysql
+	NAME           STATUS    VOLUME      CAPACITY   ACCESSMODES   STORAGECLASS   AGE
+	data-mysql-0   Bound     pvc-a0...   2Gi        RWO           standard       2h
+	data-mysql-1   Bound     pvc-c8...   2Gi        RWO           standard       2h
+	data-mysql-2   Bound     pvc-f0...   2Gi        RWO           standard       2h
+	data-mysql-3   Bound     pvc-15...   2Gi        RWO           standard       18m
+	data-mysql-4   Bound     pvc-2b...   2Gi        RWO           standard       17m
+
+Check the __reclaim policy__ for the persistent volumes:
+
+	$ kubectl get pv
+	NAME        CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                  STORAGECLASS   REASON    AGE
+	pvc-15...   2Gi        RWO           Delete          Bound     default/data-mysql-3   standard                 18m
+	pvc-2b...   2Gi        RWO           Delete          Bound     default/data-mysql-4   standard                 18m
+	pvc-a0...   2Gi        RWO           Delete          Bound     default/data-mysql-0   standard                 2h
+	pvc-c8...   2Gi        RWO           Delete          Bound     default/data-mysql-1   standard                 2h
+	pvc-f0...   2Gi        RWO           Delete          Bound     default/data-mysql-2   standard                 2h
+	$
+
+As the reclaim policy is __Delete__ (the default value) for the persistent volumes they should be deleted once their claims are deleted:
+
+	$ kubectl delete pvc data-mysql-3 data-mysql-4
+	persistentvolumeclaim "data-mysql-3" deleted
+	persistentvolumeclaim "data-mysql-4" deleted
+	$
+
+Verify that the underlying persistent volumes are deleted as expected (notice how the persistent volumes transition to __Released__ status first [this is a timing thing and may not always be apparent]):
+
+	$ kubectl get pv
+	NAME        CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS     CLAIM                  STORAGECLASS   REASON    AGE
+	pvc-15...   2Gi        RWO           Delete          Released   default/data-mysql-3   standard                 25m
+	pvc-2b...   2Gi        RWO           Delete          Released   default/data-mysql-4   standard                 24m
+	pvc-a0...   2Gi        RWO           Delete          Bound      default/data-mysql-0   standard                 2h
+	pvc-c8...   2Gi        RWO           Delete          Bound      default/data-mysql-1   standard                 2h
+	pvc-f0...   2Gi        RWO           Delete          Bound      default/data-mysql-2   standard                 2h
+	$
+
+Verify that the underlying persistent volumes are deleted as expected:
+
+	$ kubectl get pv
+	NAME        CAPACITY   ACCESSMODES   RECLAIMPOLICY   STATUS    CLAIM                  STORAGECLASS   REASON    AGE
+	pvc-a0...   2Gi        RWO           Delete          Bound     default/data-mysql-0   standard                 2h
+	pvc-c8...   2Gi        RWO           Delete          Bound     default/data-mysql-1   standard                 2h
+	pvc-f0...   2Gi        RWO           Delete          Bound     default/data-mysql-2   standard                 2h
+	$
+
 ## Teardown
 
 Run the teardown script:
@@ -217,6 +386,10 @@ Run the teardown script:
 	
 	Deleting cluster mysql-replicated...done.
 	Deleted [https ... mysql-replicated].
+	 
+	You may wish to stop minikube ('minikube stop') now.
+	Optionally, clean up minikube ('minikube delete').
+	$
 
 Optionally, open another console and watch the teardown (Ctrl-C to end):
 
