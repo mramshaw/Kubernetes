@@ -24,7 +24,7 @@ There are generally three ways of operating in the cloud:
 2. In the cloud, using a dashboard
 3. Locally as well as in the cloud, using command-line tools
 
-In this document we will discuss aspects of the first option but will mainly focus on the third as command-line tools may be scripted. This hybrid option may also feature some small performance benefits in that any use of a dashboard is local. The use of a cloud provider's dashboard is also an option but this is left as an exercise for the reader (the required sequence of events is evident in the scripts).
+In this document we will discuss aspects of the first option but will mainly focus on the third as command-line tools may be scripted. The use of a cloud provider's dashboard is also an option but this is left as an exercise for the reader (the required sequence of events is evident in the scripts).
 
 ## Preparation
 
