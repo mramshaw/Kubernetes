@@ -4,7 +4,7 @@ metadata:
   name: mysql
 spec:
   serviceName: mysql
-  replicas: 2
+  replicas: 3
   template:
     metadata:
       labels:
@@ -74,10 +74,10 @@ spec:
           mountPath: /etc/mysql/conf.d
         resources:
           requests:
-            cpu: 0.25
-            memory: 256Mi
+            cpu: 0.001
+            memory: 128Mi
           limits:
-            cpu: 0.50
+            cpu: 0.005
             memory: 512Mi
         livenessProbe:
           exec:
@@ -146,8 +146,8 @@ spec:
           mountPath: /etc/mysql/conf.d
         resources:
           requests:
-            cpu: 100m
-            memory: 100Mi
+            cpu: 50m
+            memory: 50Mi
           limits:
             cpu: 100m
             memory: 100Mi
