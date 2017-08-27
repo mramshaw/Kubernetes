@@ -164,19 +164,19 @@ Query the replicated __mysql-read-only__ to verify that the load-balancing works
 
 Break the MySQL __readiness probe__ in the second replica:
 
-	kubectl exec mysql-2 -c mysql -- mv /usr/bin/mysql /usr/bin/mysql.off
+	$ kubectl exec mysql-2 -c mysql -- mv /usr/bin/mysql /usr/bin/mysql.off
 
 Verify that the __READY__ status of the second replica has transitioned to __1/2__:
 
-	kubectl get pod mysql-2
+	$ kubectl get pod mysql-2
 
 Fix the MySQL __readiness probe__:
 
-	kubectl exec mysql-2 -c mysql -- mv /usr/bin/mysql.off /usr/bin/mysql
+	$ kubectl exec mysql-2 -c mysql -- mv /usr/bin/mysql.off /usr/bin/mysql
 
 Verify that the __READY__ status of the second replica has transitioned back to __2/2__:
 
-	kubectl get pod mysql-2
+	$ kubectl get pod mysql-2
 
 #### Simulating a crash
 

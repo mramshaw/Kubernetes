@@ -4,6 +4,8 @@
 
 This is probably the premiere ___Orchestration framework___ for the __Cloud__.
 
+As of August, 2017 all of the major cloud providers belong to the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) which supports Kubernetes.
+
 The main cloud providers (AWS, Azure, GCP) all support Kubernetes (generally as a premium offering).
 
 [As Google had already used GCE for their compute engine, their container TLA is __GKE__.]
@@ -22,7 +24,9 @@ So in the end overall cost is probably not a good criterion as the charges are l
 
 #### AWS
 
-It does not seem to be that easy to create a __Kubernetes__ cluster with AWS. While there are __kops__ and __kube-aws__, which seem to be actively supported and full-featured, it is a concern that there is no AWS-native tooling.
+It does not seem to be that easy to create a __Kubernetes__ cluster with AWS. While there are [kops](https://github.com/kubernetes/kops) and [kube-aws](https://github.com/kubernetes-incubator/kube-aws), which seem to be actively supported and full-featured, it is a concern that there is no AWS-native tooling. This situation may improve now that Amazon has joined the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) - or it may not. Amazon's intentions are not clear but their Adrian Cockcroft has expressed interest in [Containerd](https://containerd.io/) and [Linkerd](https://linkerd.io/). Plus they seem to be experimenting with [kops](https://aws.amazon.com/blogs/compute/kubernetes-clusters-aws-kops/).
+
+Amazon of course have their own [ECS (EC2 Container Service)](https://aws.amazon.com/ecs/) which uses different terminology than Kubernetes (for instance I believe a __task__ approximates to a __pod__) but largely offers the same sorts of services. However the bulk of their customers appear to have opted for Kubernetes over ECS and while their ECS offering can be expected to continue to evolve, they also seem to be hedging their bets with Kubernetes.
 
 #### Azure and Firefox
 
