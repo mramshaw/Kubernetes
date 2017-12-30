@@ -52,6 +52,8 @@ For one thing, all of the cloud providers have extensive (and very cluttered) da
 
 ## Tools
 
+![minikube logo with name](./minikube_logo_with_name.svg)
+
 There are 3 main tools, __kubeadm__, __kubectl__, and __minikube__.
 
 For setting up local clusters or for provisioning VMs, __kubeadm__ is probably useful.
