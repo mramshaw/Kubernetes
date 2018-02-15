@@ -99,3 +99,7 @@ https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic
 #### Nomad on Kubernetes (Combining Kubernetes with Hashicorp's Nomad and Vault)
 
 https://github.com/mramshaw/nomad-on-kubernetes
+
+#### Cloud Django (Running Python and Django in the cloud with gunicorn)
+
+https://github.com/mramshaw/Cloud_Django
