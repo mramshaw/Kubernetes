@@ -65,9 +65,12 @@ For setting up local clusters or for provisioning VMs, __kubeadm__ is probably u
 [If you go this route, make sure to use your *best* machine for the __master__ node,
 as it is a single point of failure (multi-master clusters *may* be in the works but
 are not yet a reality as of Kubernetes 1.8). If the ___etcd___ on the master node
-breaks, not much else will work properly either.]
+breaks, not much else will work properly either. You should probably back up this
+'etcd' on a regular basis too. Maybe with a Kubernetes cronjob.]
 
-However, for dealing with cloud providers (such as AWS, Azure, GCP) it is probably not needed.
+However, for most purposes - including dealing with cloud providers (such as AWS, Azure,
+GCP, etc) - kubeadm is probably not necessary. It seems to be more of an installation
+and administration tool.
 
 Having dabbled with all 3 of the listed providers, I can confirm that it is not necessary to install __kubectl__ locally either.
 
