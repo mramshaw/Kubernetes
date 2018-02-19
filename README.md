@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is probably the premiere ___Orchestration framework___ for the __Cloud__.
+[Kubernetes](https://kubernetes.io/) is probably the premiere ___Orchestration framework___ for the __Cloud__.
 
 As of August, 2017 all of the major cloud providers belong to the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) which supports Kubernetes.
 
@@ -16,11 +16,13 @@ There's an old photography joke about what the best camera is: "the one you have
 
 Likewise, the best cloud provider is whichever one you know best.
 
-They __all__ have huge eco-systems so learning each providers set of offerings is definitely a non-trivial exercise.
+They _all_ have huge eco-systems so learning each providers set of offerings is definitely a non-trivial exercise.
 
-My read on things is that __AWS__ is the leader and likely to stay that way; __Azure__ is the corporate choice for the MS world; and __GCP__ is definitely a late-comer but cannot be too heavily discounted (or ignored). For one thing, the presence of GCP has led everyone to discount their prices (which is probably not a bad thing).
+My read on things is that __AWS__ is the leader and likely to stay that way; __Azure__ is the corporate choice for
+the MS world; and __GCP__ is a late-comer (in terms of commercial offerings) but cannot be discounted (or ignored).
+For one thing, the presence of GCP has led everyone to discount their prices (which is probably not a bad thing).
 
-So in the end overall cost is probably not a good criterion as the charges are likely to continue to go down.
+So in the end overall cost is probably not a good criterion as charges are likely to continue to go down.
 
 #### AWS
 
@@ -35,6 +37,8 @@ If you use __firefox__ as your browser, you will need to add a popup exception f
 ## Running in the Cloud versus running locally
 
 The cloud providers listed all provide either free credits or free services (presumably for evaluation purposes).
+the charges are likely to continue to go down.
+
 
 They all require a valid credit card too (presumably for identification/authentication/idemnification purposes).
 
@@ -57,6 +61,11 @@ For one thing, all of the cloud providers have extensive (and very cluttered) da
 There are 3 main tools, __kubeadm__, __kubectl__, and __minikube__.
 
 For setting up local clusters or for provisioning VMs, __kubeadm__ is probably useful.
+
+[If you go this route, make sure to use your *best* machine for the __master__ node,
+as it is a single point of failure (multi-master clusters *may* be in the works but
+are not yet a reality as of Kubernetes 1.8). If the ___etcd___ on the master node
+breaks, not much else will work properly either.]
 
 However, for dealing with cloud providers (such as AWS, Azure, GCP) it is probably not needed.
 
