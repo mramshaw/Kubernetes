@@ -4,11 +4,14 @@
 
 [Kubernetes](https://kubernetes.io/) is probably the premiere ___Orchestration framework___ for the __Cloud__.
 
-As of August, 2017 all of the major cloud providers belong to the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) which supports Kubernetes.
+As of August, 2017 all of the major cloud providers belong to the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/)
+which supports Kubernetes. In fact, Kubernetes was the first project to _graduate_ from the CNCF, in March 2018.
 
 The main cloud providers (AWS, Azure, GCP) all support Kubernetes (generally as a premium offering).
 
 [As Google had already used GCE for their compute engine, their container TLA is __GKE__.]
+
+[For those who like such terms, Kubernetes is a ___PaaS___ (Platform as a Service).]
 
 ## Thoughts on the best cloud provider
 
@@ -26,19 +29,28 @@ So in the end overall cost is probably not a good criterion as charges are likel
 
 #### AWS
 
-It does not seem to be that easy to create a __Kubernetes__ cluster with AWS. While there are [kops](https://github.com/kubernetes/kops) and [kube-aws](https://github.com/kubernetes-incubator/kube-aws), which seem to be actively supported and full-featured, it is a concern that there is no AWS-native tooling. This situation may improve now that Amazon has joined the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) - or it may not. Amazon's intentions are not clear but their Adrian Cockcroft has expressed interest in [Containerd](https://containerd.io/) and [Linkerd](https://linkerd.io/). Plus they seem to be experimenting with [kops](https://aws.amazon.com/blogs/compute/kubernetes-clusters-aws-kops/).
+It does not seem to be that easy to create a __Kubernetes__ cluster with AWS. While there are [kops](https://github.com/kubernetes/kops)
+and [kube-aws](https://github.com/kubernetes-incubator/kube-aws), which seem to be actively supported and full-featured, it is a concern
+that there is no AWS-native tooling. This situation may improve now that Amazon has joined the
+[Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/) - or it may not. Amazon's intentions are not clear but their Adrian Cockcroft
+has expressed interest in [Containerd](https://containerd.io/) and [Linkerd](https://linkerd.io/) (Linkerd is a _service mesh_, much like
+[Istio](https://istio.io/)). Plus they seem to be experimenting with [kops](https://aws.amazon.com/blogs/compute/kubernetes-clusters-aws-kops/).
 
-Amazon of course have their own [ECS (EC2 Container Service)](https://aws.amazon.com/ecs/) which uses different terminology than Kubernetes (for instance I believe a __task__ approximates to a __pod__) but largely offers the same sorts of services. However the bulk of their customers appear to have opted for Kubernetes over ECS and while their ECS offering can be expected to continue to evolve, they also seem to be hedging their bets with Kubernetes.
+Amazon of course have their own [ECS (EC2 Container Service)](https://aws.amazon.com/ecs/) which uses different terminology than Kubernetes
+(for instance I believe a __task__ approximates to a __pod__) but largely offers the same sorts of services. However the bulk of their
+customers appear to have opted for Kubernetes over ECS and while their ECS offering can be expected to continue to evolve, they also seem
+to be hedging their bets with Kubernetes.
 
 #### Azure and Firefox
 
-If you use __firefox__ as your browser, you will need to add a popup exception for __portal.azure.com__ to allow it to open pop-up windows, otherwise Azure's Cloud Shell window will not open (I have left feedback so perhaps this will be fixed). It does not seem to be possible to paste into the Cloud Shell window either, which is annoying.
+If you use __firefox__ as your browser, you will need to add a popup exception for __portal.azure.com__ to allow it to open pop-up windows,
+otherwise Azure's Cloud Shell window will not open (I have left feedback so perhaps this will be fixed). It does not seem to be possible
+to paste into the Cloud Shell window either, which is annoying.
 
 ## Running in the Cloud versus running locally
 
 The cloud providers listed all provide either free credits or free services (presumably for evaluation purposes).
-the charges are likely to continue to go down.
-
+The charges for cloud services are likely to continue to go down.
 
 They all require a valid credit card too (presumably for identification/authentication/idemnification purposes).
 
@@ -52,7 +64,8 @@ Using these will eat into your free credits, so remember to tear everything down
 
 As with __Docker__ it is possible to run __Kubernetes__ locally, which definitely has some advantages.
 
-For one thing, all of the cloud providers have extensive (and very cluttered) dashboards whereas the command _'__minikube dashboard__'_ will pop open a browser populated with a much less cluttered dashboard (making it much easier to see what is going on).
+For one thing, all of the cloud providers have extensive (and very cluttered) dashboards whereas the command _'__minikube dashboard__'_
+will pop open a browser populated with a much less cluttered dashboard (making it much easier to see what is going on).
 
 ## Tools
 
@@ -74,7 +87,9 @@ and administration tool.
 
 Having dabbled with all 3 of the listed providers, I can confirm that it is not necessary to install __kubectl__ locally either.
 
-[Each of the cloud providers recommends that you install their command-line toolset, which definitely make a lot of things simpler, however it ___should___ be possible to perform all needed functions from a web interface (navigating said dashboard is generally non-trivial however). When operating in the cloud you will use a provided kubectl, so no need to have it installed locally.]
+[Each of the cloud providers recommends that you install their command-line toolset, which definitely make a lot of things simpler,
+however it ___should___ be possible to perform all needed functions from a web interface (navigating said dashboard is generally
+non-trivial however). When operating in the cloud you will use a provided kubectl, so no need to have it installed locally.]
 
 For local familiarization, __minikube__ is the way to go - and it requires __kubectl__.
 
@@ -90,7 +105,9 @@ Using either of these probably requires enabling either __VT-x__ or __AMD-v__ ha
 
 ## My Projects
 
-These are not in the same order that I went through them, as I progressed I had to backtrack from time to time (when I needed a better grounding on basic concepts) but the order below corresponds to what I think is the difficulty level; in other words the order presented is the order to follow.
+These are not in the same order that I went through them, as I progressed I had to backtrack from time to time (when I needed a
+better grounding on basic concepts) but the order below corresponds to what I think is the difficulty level; in other words the
+order presented is the order to follow.
 
 These all require __kubectl__ and __minikube__.
 
@@ -115,6 +132,8 @@ https://github.com/mramshaw/nomad-on-kubernetes
 #### How to run the Istio Ingress Controller on Kubernetes
 
 https://github.com/mramshaw/istio-ingress-tutorial
+
+This last project can be run locally.
 
 #### Cloud Django (Running Python and Django in the cloud with gunicorn)
 
