@@ -27,6 +27,10 @@ For one thing, the presence of GCP has led everyone to discount their prices (wh
 
 So in the end overall cost is probably not a good criterion as charges are likely to continue to go down.
 
+[UPDATE: For probably much the same reasons as Amazon (their customers were already running it on their hardware),
+ Digital Ocean are getting into the Kubernetes market. DO announced their upcoming Early Access Program im May, 2018
+ with clusters free through September 2018. DO also upgraded their CNCF membership from Silver to Gold.]
+
 #### AWS
 
 It does not seem to be that easy to create a __Kubernetes__ cluster with AWS. While there are [kops](https://github.com/kubernetes/kops)
