@@ -45,6 +45,14 @@ Amazon of course have their own [ECS (EC2 Container Service)](https://aws.amazon
 customers appear to have opted for Kubernetes over ECS and while their ECS offering can be expected to continue to evolve, they also seem
 to be hedging their bets with Kubernetes.
 
+UPDATE: As of November 29, 2017 Amazon announced their new Containers-as-a-Service service
+[Fargate](https://aws.amazon.com/about-aws/whats-new/2017/11/introducing-aws-fargate-a-technology-to-run-containers-without-managing-infrastructure/)
+as well as their new managed Kubernetes offering
+[Amazon Elastic Container Service for Kubernetes](https://aws.amazon.com/eks/) (for which the TLA is EKS).
+It's probably too early to say what these services offer over and above what was previously offered, but it
+does seem to be proof that Amazon Marketing likes the Kubernetes brand. Fargate, at least, looks like a product
+that will really appeal to the ML (Machine learning) crowd.
+
 #### Azure and Firefox
 
 If you use __firefox__ as your browser, you will need to add a popup exception for __portal.azure.com__ to allow it to open pop-up windows,
