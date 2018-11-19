@@ -137,6 +137,10 @@ https://github.com/mramshaw/Kubernetes/tree/master/Single%20MySQL%20(Persistent%
 
 https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)
 
+#### Replicated Cassandra Database
+
+https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20Cassandra%20Database
+
 #### Nomad on Kubernetes (Combining Kubernetes with Hashicorp's Nomad and Vault)
 
 https://github.com/mramshaw/nomad-on-kubernetes
