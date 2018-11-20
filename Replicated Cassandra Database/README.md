@@ -1,4 +1,4 @@
-# Stateful MySQL with Kubernetes
+# Stateful Cassandra with Kubernetes
 
 ## Motivation
 
@@ -39,6 +39,16 @@ This is not a good idea for a production deployment but will be acceptable for t
 #### Pull image
 
 To avoid the downloading phase when running __minikube__, perform the following steps:
+
+1. minikube start
+2. minikube ssh
+3. docker images (optional)
+4. docker pull gcr.io/google-samples/cassandra:v13
+5. docker images (optional)
+6. exit
+7. minikube stop
+
+This should look as follows:
 
 ```bash
 $ minikube start
