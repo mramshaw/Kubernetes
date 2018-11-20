@@ -2,7 +2,11 @@
 
 ## Motivation
 
-Create a stateful Cassandra database using a stateful set and then spin up two replicas to make a Cassandra ring.
+Create a stateful [Cassandra](http://cassandra.apache.org/) database using a stateful set and then spin up two replicas to make a Cassandra ring.
+
+[Note that this example is Debian-based and uses the OpenJDK 8 JRE rather than a proprietary Java (see [Dockerfile](./Dockerfile)).]
+
+We will use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
 
 This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
 
@@ -85,11 +89,11 @@ Machine stopped.
 $
 ```
 
-Once __gcr.io/google-samples/cassandra:v13__ (235 MB) shows as an available Docker image in the minikube repository, the downloading portion should be complete. Docker images will persist in minikube until a 'minikube delete' command is run.
+Once __gcr.io/google-samples/cassandra:v13__ (235 MB) shows as an available Docker image in the minikube repository, the downloading portion should be complete. Docker images will persist in minikube until a `minikube delete` command is run.
 
 #### Shutdown period
 
-We will reduce the `terminationGracePeriodSeconds` form the recommended __1800__ (seconds) to __180__.
+We will reduce the `terminationGracePeriodSeconds` from the recommended __1800__ (30 minutes in seconds) to __180__ (3 minutes in seconds).
 
 This is probably not ideal for production use, where in-flight requests should have a long timeout,
 but is probably an acceptable grace period for testing purposes.
@@ -125,7 +129,7 @@ Loading cached images from config file.
 $
 ```
 
-In general, rather than run containers on virtual machines _in a virtual machine_, it is probably a better idea to run this exercise in the cloud. With multiple levels of abstraction it can be very hard to grok what is going on, hardware limitations will probably create lots of restarts simply due to hardware limitations, which will make debugging configuration errors all that much harder.
+In general, rather than run containers on virtual machines _in a virtual machine_, it is probably a better idea to run this exercise in the cloud. With multiple levels of abstraction it can be very hard to grok what is going on and hardware limitations will probably create lots of restarts simply due to hardware limitations, both of which will make debugging configuration errors all that much harder.
 
 #### Memory
 
@@ -195,7 +199,7 @@ We can verify the execution of the container initialization processes as follows
 Run the following command:
 
 ```bash
-grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGracePeriodSeconds}') \
+$ grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGracePeriodSeconds}') \
   && kubectl delete statefulset -l app=cassandra \
   && echo "Sleeping $grace_period" \
   && sleep $grace_period \
@@ -231,6 +235,13 @@ $ minikube stop
 * kubectl	__2018.09.17__
 * minikube	__v0.30.0__
 
+## To Do
+
+- [ ] Add database / replica queries using `cqlsh`
+- [ ] Investigate [Seed providers](http://github.com/kubernetes/examples/blob/master/cassandra/java/README.md)
+
 ## Credits
 
 Based on http://kubernetes.io/docs/tutorials/stateful-application/cassandra/
+
+[Well worth a read.]
