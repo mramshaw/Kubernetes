@@ -10,7 +10,7 @@ Create a stateful [Cassandra](http://cassandra.apache.org/) database using a sta
 
 We will use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
 
-This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
+This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
 
 ## Contents
 
@@ -20,7 +20,7 @@ The content are as follows:
 * [Method](#Method)
 * [Preparation](#preparation)
     * [Increase minikube's working memory](#increase-minikubes-working-memory)
-    * [Increase minikube's processors](#increase-minikube-s-processors)
+    * [Increase minikube's processors](#increase-minikubes-processors)
     * [imagePullPolicy](#imagepullpolicy)
     * [Pull image](#pull-image)
     * [Shutdown period](#shutdown-period)
@@ -30,6 +30,10 @@ The content are as follows:
 * [Testing](#testing)
     * [Cassandra service](#cassandra-service)
     * [Cassandra pods](#cassandra-pods)
+    * [Master pod](#master-pod)
+    * [First replica](#first-replica)
+    * [Second replica](#second-replica)
+    * [Ring status](#ring-status)
 * [Teardown](#teardown)
 * [Versions](#versions)
 * [To Do](#to-do)
@@ -182,6 +186,8 @@ In general, rather than run containers on virtual machines _in a virtual machine
 
 It may be necessary to adjust the memory requirements as specified in `cassandra-service.yaml`.
 
+But try the recommended settings first, and then adjust as necessary.
+
 ## Testing
 
 We will create a Cassandra service and then Cassandra pods.
@@ -238,7 +244,7 @@ cassandra-data-cassandra-2   Bound     pvc-6eca05ba-ef45-11e8-8e5e-080027ef9b14 
 $
 ```
 
-Repeat the following command until all three pods show as up:
+Once all of our storage is allocated, repeat the following command until all three pods show as up:
 
     $ kubectl get statefulset cassandra
 
@@ -263,9 +269,47 @@ Once that is done, progress can be monitored as follows:
 
 Eventually, something like the following should indicate that the master pod is up:
 
-```bash
+```
 INFO  17:30:10 Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
 ```
+
+There are many patterns of database replication: in my MySQL exercise, the replication was as a master-slave
+relationship - with the replicas being read-only. Here we are creating equal replicas (or __peers__), but they
+are created __sequentially__ (i.e. daisy-chained); by convention, the first replica is referred to as the master.
+The replicas are then *copied* from the master once the master is up and running.
+
+#### First replica
+
+We can verify the execution of the first replica as follows:
+
+	$ kubectl logs cassandra-1
+
+Something like the following should indicate that it is up:
+
+```
+INFO  19:33:33 Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
+INFO  19:33:33 Not starting RPC server as requested. Use JMX (StorageService->startRPCServer()) or nodetool (enablethrift) to start it
+INFO  19:33:48 Handshaking version with /172.17.0.9
+INFO  19:33:48 Handshaking version with /172.17.0.9
+INFO  19:33:48 Node /172.17.0.9 is now part of the cluster
+INFO  19:33:48 InetAddress /172.17.0.9 is now UP
+```
+
+#### Second replica
+
+We can verify the execution of the second replica as follows:
+
+	$ kubectl logs cassandra-2
+
+Once again, something like the following indicates that the replica is up:
+
+```
+INFO  19:34:33 Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
+```
+
+#### Ring status
+
+We will use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to display the status of the ring:
 
 ```bash
 $ kubectl exec -it cassandra-0 -- nodetool status
@@ -274,23 +318,24 @@ Datacenter: DC1-K8Demo
 Status=Up/Down
 |/ State=Normal/Leaving/Joining/Moving
 --  Address     Load       Tokens       Owns (effective)  Host ID                               Rack
-UN  172.17.0.7  99.59 KiB  32           100.0%            aa96dcf8-0dd0-4c78-a961-7163a4357620  Rack1-K8Demo
+UN  172.17.0.7  104.55 KiB  32           56.3%             78949d75-305a-48e4-aedd-5724129f6b60  Rack1-K8Demo
+UN  172.17.0.9  70.94 KiB  32           75.1%             e2fb8595-353f-43a7-9843-5f40c8639e7e  Rack1-K8Demo
+UN  172.17.0.8  108.9 KiB  32           68.7%             f641c30e-60f0-4888-8060-5f646558cca9  Rack1-K8Demo
 
 $
 ```
 
-#### Startup
-
-We can verify the execution of the container initialization processes as follows:
-
-
-	$ kubectl logs cassandra-1
-
-	$ kubectl logs cassandra-2
-
 ## Teardown
 
-Run the following command:
+Optionally, open another console to watch the teardown as follows (Ctrl-C to end):
+
+```bash
+$ kubectl get pods -l app=cassandra -o wide --watch
+^C
+$
+```
+
+In the original console, run the following command:
 
 ```bash
 $ grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGracePeriodSeconds}') \
@@ -302,11 +347,13 @@ $ grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGrace
 
 [This will wait for the specified grace period and then delete the persistent volumes.]
 
-Optionally, open another console and watch the teardown (Ctrl-C to end):
+Verify that the persistent volumes have been disposed of as follows:
 
 ```bash
-$ kubectl get pods -l app=cassandra -o wide --watch
-^C
+$ kubectl get pvc
+No resources found.
+$ kubectl get pv
+No resources found.
 $
 ```
 
