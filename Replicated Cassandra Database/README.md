@@ -1,5 +1,7 @@
 # Stateful Cassandra with Kubernetes
 
+![Cassandra](images/Cassandra.png)
+
 ## Motivation
 
 Create a stateful [Cassandra](http://cassandra.apache.org/) database using a stateful set and then spin up two replicas to make a Cassandra ring.
@@ -29,6 +31,12 @@ In this document we will discuss the first option.
 
 The following steps may not be absolutely necessary, but will probably save time and aggravation.
 
+#### Increase minikube's working memory
+
+Cassanda is a ___beast___, so we will need to allocate ___lots___ of memory:
+
+![Minikube memory](images/Minikube_memory.png)
+
 #### imagePullPolicy
 
 In order to save on network traffic, we will change the [image pull policy](http://kubernetes.io/docs/concepts/containers/images/#updating-images)
@@ -40,13 +48,13 @@ This is not a good idea for a production deployment but will be acceptable for t
 
 To avoid the downloading phase when running __minikube__, perform the following steps:
 
-1. minikube start
-2. minikube ssh
-3. docker images (optional)
-4. docker pull gcr.io/google-samples/cassandra:v13
-5. docker images (optional)
-6. exit
-7. minikube stop
+1. `minikube start`
+2. `minikube ssh`
+3. `docker images` (optional)
+4. `docker pull gcr.io/google-samples/cassandra:v13`
+5. `docker images` (optional)
+6. `exit`
+7. `minikube stop`
 
 This should look as follows:
 
