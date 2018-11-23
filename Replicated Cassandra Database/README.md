@@ -37,6 +37,12 @@ Cassanda is a ___beast___, so we will need to allocate ___lots___ of memory:
 
 ![Minikube memory](images/Minikube_memory.png)
 
+#### Increase minikube's processors
+
+Likewise we will need to allocate ___lots___ of processors:
+
+![Minikube processors](images/Minikube_processors.png)
+
 #### imagePullPolicy
 
 In order to save on network traffic, we will change the [image pull policy](http://kubernetes.io/docs/concepts/containers/images/#updating-images)
@@ -149,10 +155,6 @@ $
 
 In general, rather than run containers on virtual machines _in a virtual machine_, it is probably a better idea to run this exercise in the cloud. With multiple levels of abstraction it can be very hard to grok what is going on and hardware limitations will probably create lots of restarts simply due to hardware limitations, both of which will make debugging configuration errors all that much harder.
 
-#### Memory
-
-In order to save on virtual memory thrashing, we will halve all of the memory requirements.
-
 ## Testing
 
 #### Cassandra service
@@ -180,15 +182,61 @@ Spin up our statefulset as follows:
 
     $ kubectl create -f cassandra-statefulset.yaml
 
+[I keep getting the following warning (to be investigated):
+
+```bash
+$ kubectl create -f cassandra-statefulset.yaml
+statefulset.apps "cassandra" created
+Error from server (AlreadyExists): error when creating "cassandra-statefulset.yaml": storageclasses.storage.k8s.io "fast" already exists
+$
+```
+
+Note that this is only a ___warning___ message; everything spins up as expected.]
+
+We can check on the storage allocation as follows:
+
+```bash
+$ kubectl get pv
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS    CLAIM                                STORAGECLASS   REASON    AGE
+pvc-3e1bdaeb-ef45-11e8-8e5e-080027ef9b14   1Gi        RWO            Delete           Bound     default/cassandra-data-cassandra-0   fast                     11m
+pvc-4bc425c2-ef45-11e8-8e5e-080027ef9b14   1Gi        RWO            Delete           Bound     default/cassandra-data-cassandra-1   fast                     11m
+pvc-6eca05ba-ef45-11e8-8e5e-080027ef9b14   1Gi        RWO            Delete           Bound     default/cassandra-data-cassandra-2   fast                     10m
+$ kubectl get pvc
+NAME                         STATUS    VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+cassandra-data-cassandra-0   Bound     pvc-3e1bdaeb-ef45-11e8-8e5e-080027ef9b14   1Gi        RWO            fast           11m
+cassandra-data-cassandra-1   Bound     pvc-4bc425c2-ef45-11e8-8e5e-080027ef9b14   1Gi        RWO            fast           11m
+cassandra-data-cassandra-2   Bound     pvc-6eca05ba-ef45-11e8-8e5e-080027ef9b14   1Gi        RWO            fast           10m
+$
+```
+
 Repeat the following command until pod __cassandra-0__ shows as __Running__:
 
     $ kubectl get statefulset cassandra
 
-[Depending how much memory is available, this may take many minutes.]
+[Depending upon resource availability, this may take some time.]
+
+Eventually, this should show as follows:
+
+```bash
+$ kubectl get statefulset cassandra
+NAME        DESIRED   CURRENT   AGE
+cassandra   3         3         6m
+$
+```
 
 It may take a while for things to spin up, repeat the next command until pod __cassandra-0__ shows as __Running__:
 
 	$ kubectl get pods -l app=cassandra -o wide
+
+Once that is done, progress can be monitored as follows:
+
+	$ kubectl logs cassandra-0
+
+Eventually, something like the following should indicate that the master pod is up:
+
+```bash
+INFO  17:30:10 Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
+```
 
 ```bash
 $ kubectl exec -it cassandra-0 -- nodetool status
@@ -206,7 +254,6 @@ $
 
 We can verify the execution of the container initialization processes as follows:
 
-	$ kubectl logs cassandra-0
 
 	$ kubectl logs cassandra-1
 
@@ -256,6 +303,7 @@ $ minikube stop
 ## To Do
 
 - [ ] Add database / replica queries using `cqlsh`
+- [ ] Investigate `storageclasses.storage.k8s.io "fast" already exists` warning message
 - [ ] Investigate [Seed providers](http://github.com/kubernetes/examples/blob/master/cassandra/java/README.md)
 
 ## Credits
