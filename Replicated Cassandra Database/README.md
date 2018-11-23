@@ -19,12 +19,12 @@ The content are as follows:
 * [Prerequisites](#prerequisites)
 * [Method](#Method)
 * [Preparation](#preparation)
-    * [Increase minikube's working memory](#increase-minikube-s-working-memory)
+    * [Increase minikube's working memory](#increase-minikubes-working-memory)
     * [Increase minikube's processors](#increase-minikube-s-processors)
     * [imagePullPolicy](#imagepullpolicy)
     * [Pull image](#pull-image)
     * [Shutdown period](#shutdown-period)
-* [Startup](#testing)
+* [Startup](#startup)
     * [Minikube limits](#minikube-limits)
     * [Memory](#memory)
 * [Testing](#testing)
@@ -33,7 +33,7 @@ The content are as follows:
 * [Teardown](#teardown)
 * [Versions](#versions)
 * [To Do](#to-do)
-* [Credits](#Prerequisites)
+* [Credits](#credits)
 
 ## Prerequisites
 
