@@ -12,6 +12,29 @@ We will use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/No
 
 This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
 
+## Contents
+
+The content are as follows:
+
+* [Prerequisites](#prerequisites)
+* [Method](#Method)
+* [Preparation](#preparation)
+    * [Increase minikube's working memory](#increase-minikube-s-working-memory)
+    * [Increase minikube's processors](#increase-minikube-s-processors)
+    * [imagePullPolicy](#imagepullpolicy)
+    * [Pull image](#pull-image)
+    * [Shutdown period](#shutdown-period)
+* [Startup](#testing)
+    * [Minikube limits](#minikube-limits)
+    * [Memory](#memory)
+* [Testing](#testing)
+    * [Cassandra service](#cassandra-service)
+    * [Cassandra pods](#cassandra-pods)
+* [Teardown](#teardown)
+* [Versions](#versions)
+* [To Do](#to-do)
+* [Credits](#Prerequisites)
+
 ## Prerequisites
 
 * __kubectl__ installed.
@@ -155,7 +178,13 @@ $
 
 In general, rather than run containers on virtual machines _in a virtual machine_, it is probably a better idea to run this exercise in the cloud. With multiple levels of abstraction it can be very hard to grok what is going on and hardware limitations will probably create lots of restarts simply due to hardware limitations, both of which will make debugging configuration errors all that much harder.
 
+#### Memory
+
+It may be necessary to adjust the memory requirements as specified in `cassandra-service.yaml`.
+
 ## Testing
+
+We will create a Cassandra service and then Cassandra pods.
 
 #### Cassandra service
 
@@ -209,7 +238,7 @@ cassandra-data-cassandra-2   Bound     pvc-6eca05ba-ef45-11e8-8e5e-080027ef9b14 
 $
 ```
 
-Repeat the following command until pod __cassandra-0__ shows as __Running__:
+Repeat the following command until all three pods show as up:
 
     $ kubectl get statefulset cassandra
 
