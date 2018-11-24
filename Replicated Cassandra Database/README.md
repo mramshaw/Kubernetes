@@ -270,7 +270,9 @@ Once that is done, progress can be monitored as follows:
 Eventually, something like the following should indicate that the master pod is up:
 
 ```
+...
 INFO  17:30:10 Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
+...
 ```
 
 There are many patterns of database replication: in my MySQL exercise, the replication was as a master-slave
@@ -287,12 +289,14 @@ We can verify the execution of the first replica as follows:
 Something like the following should indicate that it is up:
 
 ```
+...
 INFO  19:33:33 Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
 INFO  19:33:33 Not starting RPC server as requested. Use JMX (StorageService->startRPCServer()) or nodetool (enablethrift) to start it
 INFO  19:33:48 Handshaking version with /172.17.0.9
 INFO  19:33:48 Handshaking version with /172.17.0.9
 INFO  19:33:48 Node /172.17.0.9 is now part of the cluster
 INFO  19:33:48 InetAddress /172.17.0.9 is now UP
+...
 ```
 
 #### Second replica
@@ -304,7 +308,9 @@ We can verify the execution of the second replica as follows:
 Once again, something like the following indicates that the replica is up:
 
 ```
+...
 INFO  19:34:33 Starting listening for CQL clients on /0.0.0.0:9042 (unencrypted)...
+...
 ```
 
 #### Ring status
@@ -329,11 +335,9 @@ $
 
 Optionally, open another console to watch the teardown as follows (Ctrl-C to end):
 
-```bash
-$ kubectl get pods -l app=cassandra -o wide --watch
-^C
-$
-```
+    $ kubectl get pods -l app=cassandra -o wide --watch
+
+[Note that the pods are torn down in reverse order.]
 
 In the original console, run the following command:
 
@@ -346,6 +350,45 @@ $ grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGrace
 ```
 
 [This will wait for the specified grace period and then delete the persistent volumes.]
+
+In the second console, things should look as follows:
+
+```bash
+$ kubectl get pods -l app=cassandra -o wide --watch
+NAME          READY     STATUS    RESTARTS   AGE       IP           NODE
+cassandra-0   1/1       Running   0          19m       172.17.0.7   minikube
+cassandra-1   1/1       Running   0          17m       172.17.0.8   minikube
+cassandra-2   1/1       Running   0          16m       172.17.0.9   minikube
+cassandra-2   1/1       Terminating   0         17m       172.17.0.9   minikube
+cassandra-2   0/1       Terminating   0         17m       172.17.0.9   minikube
+cassandra-2   0/1       Terminating   0         17m       172.17.0.9   minikube
+cassandra-2   0/1       Terminating   0         17m       172.17.0.9   minikube
+cassandra-1   1/1       Terminating   0         18m       172.17.0.8   minikube
+cassandra-1   0/1       Terminating   0         18m       172.17.0.8   minikube
+cassandra-1   0/1       Terminating   0         18m       172.17.0.8   minikube
+cassandra-1   0/1       Terminating   0         18m       172.17.0.8   minikube
+cassandra-0   1/1       Terminating   0         20m       172.17.0.7   minikube
+cassandra-0   0/1       Terminating   0         20m       <none>    minikube
+^C$
+```
+
+[Note that the pods are torn down in reverse order.]
+
+In the original console, things should look as follows:
+
+```bash
+$ grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGracePeriodSeconds}') \
+>   && kubectl delete statefulset -l app=cassandra \
+>   && echo "Sleeping $grace_period" \
+>   && sleep $grace_period \
+>   && kubectl delete pvc -l app=cassandra
+statefulset.apps "cassandra" deleted
+Sleeping 180
+persistentvolumeclaim "cassandra-data-cassandra-0" deleted
+persistentvolumeclaim "cassandra-data-cassandra-1" deleted
+persistentvolumeclaim "cassandra-data-cassandra-2" deleted
+$
+```
 
 Verify that the persistent volumes have been disposed of as follows:
 
