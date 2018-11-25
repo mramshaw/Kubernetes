@@ -217,7 +217,15 @@ Spin up our statefulset as follows:
 
     $ kubectl create -f cassandra-statefulset.yaml
 
-[I keep getting the following warning (to be investigated):
+This should look as follows:
+
+```bash
+$ kubectl create -f cassandra-statefulset.yaml
+statefulset.apps "cassandra" created
+$
+```
+
+If instead it looks as follows (including the warning about storage class "fast" already existing):
 
 ```bash
 $ kubectl create -f cassandra-statefulset.yaml
@@ -226,7 +234,17 @@ Error from server (AlreadyExists): error when creating "cassandra-statefulset.ya
 $
 ```
 
-Note that this is only a ___warning___ message; everything spins up as expected.]
+Then the [storage classes](http://kubernetes.io/docs/concepts/storage/storage-classes/) can be listed as follows:
+
+```bash
+$ kubectl get storageclasses
+NAME                 PROVISIONER                AGE
+fast                 k8s.io/minikube-hostpath   6d
+standard (default)   k8s.io/minikube-hostpath   6d
+$
+```
+
+[Note that this is only a ___warning___ message; everything will still spin up as expected.]
 
 We can check on the storage allocation as follows:
 
@@ -400,6 +418,12 @@ No resources found.
 $
 ```
 
+Optionally, delete the [storage class](http://kubernetes.io/docs/concepts/storage/storage-classes/):
+
+    $ kubectl delete storageclass fast
+
+[This will get rid of the annoying warning, as listed above.]
+
 Delete the service:
 
 ```bash
@@ -422,7 +446,7 @@ $ minikube stop
 ## To Do
 
 - [ ] Add database / replica queries using `cqlsh`
-- [ ] Investigate `storageclasses.storage.k8s.io "fast" already exists` warning message
+- [x] Investigate `storageclasses.storage.k8s.io "fast" already exists` warning message
 - [ ] Investigate [Seed providers](http://github.com/kubernetes/examples/blob/master/cassandra/java/README.md)
 
 ## Credits
