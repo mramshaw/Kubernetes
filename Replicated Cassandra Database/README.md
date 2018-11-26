@@ -2,6 +2,14 @@
 
 ![Cassandra](images/Cassandra.png)
 
+Cassanda is a [NoSQL](http://en.wikipedia.org/wiki/NoSQL) database that originated at Facebook.
+
+![CAP and Cassandra](images/CAP_Cassandra.png)
+
+In terms of the [CAP or Brewer's theorem](http://en.wikipedia.org/wiki/Cap_theorem), Cassandra is an ___eventually-consistent___
+database. This means that replicas of a row may have different versions of the data - but only for brief periods. The replicas
+will __eventually__ be synchronized and become consistent (hence the term).
+
 ## Motivation
 
 Create a stateful [Cassandra](http://cassandra.apache.org/) database using a stateful set and then spin up two replicas to make a Cassandra ring.
