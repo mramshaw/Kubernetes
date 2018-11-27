@@ -16,7 +16,7 @@ Create a stateful [Cassandra](http://cassandra.apache.org/) database using a sta
 
 [Note that this example is Debian-based and uses the OpenJDK 8 JRE rather than a proprietary Java (see [Dockerfile](./Dockerfile)).]
 
-We will use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
+We will use then the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
 
 This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
 
@@ -30,7 +30,7 @@ The content are as follows:
     * [Increase minikube's working memory](#increase-minikubes-working-memory)
     * [Increase minikube's processors](#increase-minikubes-processors)
     * [imagePullPolicy](#imagepullpolicy)
-    * [Pull image](#pull-image)
+    * [Pull Cassandra image](#pull-cassandra-image)
     * [Shutdown period](#shutdown-period)
 * [Startup](#startup)
     * [Minikube limits](#minikube-limits)
@@ -85,7 +85,7 @@ In order to save on network traffic, we will change the [image pull policy](http
 
 This is not a good idea for a production deployment but will be acceptable for testing.
 
-#### Pull image
+#### Pull Cassandra image
 
 To avoid the downloading phase when running __minikube__, perform the following steps:
 
@@ -230,10 +230,11 @@ This should look as follows:
 ```bash
 $ kubectl create -f cassandra-statefulset.yaml
 statefulset.apps "cassandra" created
+storageclass.storage.k8s.io "fast" created
 $
 ```
 
-If instead it looks as follows (including the warning about storage class "fast" already existing):
+If instead it looks as follows (note the warning about storage class "fast" already existing):
 
 ```bash
 $ kubectl create -f cassandra-statefulset.yaml
@@ -370,7 +371,7 @@ In the original console, run the following command:
 ```bash
 $ grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGracePeriodSeconds}') \
   && kubectl delete statefulset -l app=cassandra \
-  && echo "Sleeping $grace_period" \
+  && echo "Sleeping for $grace_period seconds" \
   && sleep $grace_period \
   && kubectl delete pvc -l app=cassandra
 ```
