@@ -1,14 +1,6 @@
 # Stateful Cassandra with Kubernetes
 
-![Cassandra](images/Cassandra.png)
-
-Cassanda is a [NoSQL](http://en.wikipedia.org/wiki/NoSQL) database that originated at Facebook.
-
-In terms of the [CAP or Brewer's theorem](http://en.wikipedia.org/wiki/Cap_theorem), Cassandra is an ___eventually-consistent___
-database. This means that replicas of a row may have different versions of the data - but only for brief periods. The replicas
-will __eventually__ be synchronized and become consistent (hence the term).
-
-![CAP and Cassandra](images/CAP_Cassandra.png)
+Create a multi-seat Cassandra database with Kubernetes
 
 ## Motivation
 
@@ -16,7 +8,17 @@ Create a stateful [Cassandra](http://cassandra.apache.org/) database using a sta
 
 [Note that this example is Debian-based and uses the OpenJDK 8 JRE rather than a proprietary Java (see [Dockerfile](./Dockerfile)).]
 
-We will use then the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
+We will then use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
+
+In terms of a data model, we will use the `users` table from [Twissandra](http://github.com/twissandra/twissandra) (Twissandra is a twitter clone).
+
+We will set up a `keyspace` and a `column family`, insert some data into the `column family` and then verify replication.
+
+[Terminology: a Cassandra `keyspace` corresponds to a relational database while a `column family` corresponds to a relational table.]
+
+Next we will scale up the replica count and check for evidence of ___bootstrapping___ (the process by which a new node is onboarded).
+
+Finally, we will tear everything down and clean up.
 
 This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
 
@@ -42,7 +44,9 @@ The content are as follows:
     * [First replica](#first-replica)
     * [Second replica](#second-replica)
     * [Ring status](#ring-status)
+    * [Third replica](#third-replica)
 * [Teardown](#teardown)
+* [Reference](#reference)
 * [Versions](#versions)
 * [To Do](#to-do)
 * [Credits](#credits)
@@ -351,9 +355,38 @@ Datacenter: DC1-K8Demo
 Status=Up/Down
 |/ State=Normal/Leaving/Joining/Moving
 --  Address     Load       Tokens       Owns (effective)  Host ID                               Rack
-UN  172.17.0.7  104.55 KiB  32           56.3%             78949d75-305a-48e4-aedd-5724129f6b60  Rack1-K8Demo
-UN  172.17.0.9  70.94 KiB  32           75.1%             e2fb8595-353f-43a7-9843-5f40c8639e7e  Rack1-K8Demo
-UN  172.17.0.8  108.9 KiB  32           68.7%             f641c30e-60f0-4888-8060-5f646558cca9  Rack1-K8Demo
+UN  172.17.0.7  104.55 KiB  32           75.5%             db74e316-253e-483c-b5fd-59670642a3dc  Rack1-K8Demo
+UN  172.17.0.9  15.38 KiB  32           67.4%             75ae1ee3-4f33-492c-99e5-065194152136  Rack1-K8Demo
+UN  172.17.0.8  103.81 KiB  32           57.0%             19b9f0d7-cafd-46fd-be91-6be1e71617d0  Rack1-K8Demo
+
+$
+```
+
+#### Third replica
+
+Spin up a third replica as follows:
+
+    $ kubectl edit statefulset cassandra
+
+Change the number of replicas to 4 and save.
+
+Repeat the following command until `cassandra-3` shows as __running__:
+
+    $ kubectl get pods -l app=cassandra -o wide
+
+Use the [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) again to display the status of the ring:
+
+```bash
+$ kubectl exec -it cassandra-0 -- nodetool status
+Datacenter: DC1-K8Demo
+======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address      Load       Tokens       Owns (effective)  Host ID                               Rack
+UN  172.17.0.7   104.55 KiB  32           57.2%             db74e316-253e-483c-b5fd-59670642a3dc  Rack1-K8Demo
+UN  172.17.0.9   84.81 KiB  32           58.9%             75ae1ee3-4f33-492c-99e5-065194152136  Rack1-K8Demo
+UN  172.17.0.8   103.81 KiB  32           38.7%             19b9f0d7-cafd-46fd-be91-6be1e71617d0  Rack1-K8Demo
+UN  172.17.0.10  103.82 KiB  32           45.2%             3ea44897-ab93-4c52-99b2-0e4ead1425b6  Rack1-K8Demo
 
 $
 ```
@@ -406,11 +439,11 @@ In the original console, things should look as follows:
 ```bash
 $ grace_period=$(kubectl get po cassandra-0 -o=jsonpath='{.spec.terminationGracePeriodSeconds}') \
 >   && kubectl delete statefulset -l app=cassandra \
->   && echo "Sleeping $grace_period" \
+>   && echo "Sleeping for $grace_period seconds" \
 >   && sleep $grace_period \
 >   && kubectl delete pvc -l app=cassandra
 statefulset.apps "cassandra" deleted
-Sleeping 180
+Sleeping for 180 seconds
 persistentvolumeclaim "cassandra-data-cassandra-0" deleted
 persistentvolumeclaim "cassandra-data-cassandra-1" deleted
 persistentvolumeclaim "cassandra-data-cassandra-2" deleted
@@ -447,6 +480,24 @@ Finally, stop minikube:
 $ minikube stop
 ```
 
+## Reference
+
+General overview of Cassandra (sound quality is very poor):
+
+    http://www.se-radio.net/2011/10/episode-179-cassandra-with-jonathan-ellis
+
+Backing up and restoring Cassandra data:
+
+    http://docs.datastax.com/en/cassandra/3.0/cassandra/operations/opsBackupRestore.html
+
+Bootstrapping:
+
+    http://thelastpickle.com/blog/2017/05/23/auto-bootstrapping-part1.html
+
+Twissandra:
+
+    http://github.com/twissandra/twissandra
+
 ## Versions
 
 * kubectl	__2018.09.17__
@@ -460,6 +511,8 @@ $ minikube stop
 
 ## Credits
 
-Based on http://kubernetes.io/docs/tutorials/stateful-application/cassandra/
+Based on:
+
+    http://kubernetes.io/docs/tutorials/stateful-application/cassandra/
 
 [Well worth a read.]
