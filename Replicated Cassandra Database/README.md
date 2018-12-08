@@ -505,7 +505,7 @@ Twissandra:
 
 ## To Do
 
-<strike>- [ ] Add database / replica queries using `cqlsh`</strike>
+- [ ] <strike>Add database / replica queries using `cqlsh`</strike>
 - [ ] Backport database / replica queries from [Python-Cassandra](http://github.com/mramshaw/Python_Cassandra)
 - [x] Investigate `storageclasses.storage.k8s.io "fast" already exists` warning message
 - [ ] Investigate [Seed providers](http://github.com/kubernetes/examples/blob/master/cassandra/java/README.md)
