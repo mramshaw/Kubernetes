@@ -10,7 +10,7 @@ Create a stateful [Cassandra](http://cassandra.apache.org/) database using a sta
 
 We will then use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
 
-In terms of a data model, we will use the `users` table from [Twissandra](http://github.com/twissandra/twissandra) (Twissandra is a twitter clone).
+In terms of a data model, we will use the `users` table from [Twissandra](http://github.com/twissandra/twissandra) (Twissandra is a Twitter clone).
 
 We will set up a `keyspace` and a `column family`, insert some data into the `column family` and then verify replication.
 
@@ -505,7 +505,8 @@ Twissandra:
 
 ## To Do
 
-- [ ] Add database / replica queries using `cqlsh`
+<strike>- [ ] Add database / replica queries using `cqlsh`</strike>
+- [ ] Backport database / replica queries from [Python-Cassandra](http://github.com/mramshaw/Python_Cassandra)
 - [x] Investigate `storageclasses.storage.k8s.io "fast" already exists` warning message
 - [ ] Investigate [Seed providers](http://github.com/kubernetes/examples/blob/master/cassandra/java/README.md)
 
