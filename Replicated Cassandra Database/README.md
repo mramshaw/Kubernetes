@@ -6,21 +6,22 @@ Create a multi-seat Cassandra database with Kubernetes
 
 Create a stateful [Cassandra](http://cassandra.apache.org/) database using a stateful set and then spin up two replicas to make a Cassandra ring.
 
-[Note that this example is Debian-based and uses the OpenJDK 8 JRE rather than a proprietary Java (see [Dockerfile](./Dockerfile)).]
-
 We will then use the Cassandra [nodetool utility](http://wiki.apache.org/cassandra/NodeTool) to verify the Cassandra ring status.
-
-In terms of a data model, we will use the `users` table from [Twissandra](http://github.com/twissandra/twissandra) (Twissandra is a Twitter clone).
-
-We will set up a `keyspace` and a `column family`, insert some data into the `column family` and then verify replication.
-
-[Terminology: a Cassandra `keyspace` corresponds to a relational database while a `column family` corresponds to a relational table.]
 
 Next we will scale up the replica count and check for evidence of ___bootstrapping___ (the process by which a new node is onboarded).
 
 Finally, we will tear everything down and clean up.
 
+[Note that this example is Debian-based and uses the OpenJDK 8 JRE rather than a proprietary Java (see [Dockerfile](./Dockerfile)).]
+
 This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
+
+For an example of accessing Cassandra with Python, see my [Python-Cassandra](http://github.com/mramshaw/Python_Cassandra) repo.
+
+There I  set up a `keyspace` and a `column family`, insert some data into the `column family` and then list the contents.
+
+[Terminology: a Cassandra `keyspace` corresponds to a relational database while a `column family` corresponds to a relational table.
+ In fact the term `column family` may simply be needless bafflegab, as Cassandra generally uses the familiar term `table`.]
 
 ## Contents
 
@@ -506,7 +507,7 @@ Twissandra:
 ## To Do
 
 - [ ] <strike>Add database / replica queries using `cqlsh`</strike>
-- [ ] Backport database / replica queries from [Python-Cassandra](http://github.com/mramshaw/Python_Cassandra)
+- [ ] <strike>Backport database / replica queries from [Python-Cassandra](http://github.com/mramshaw/Python_Cassandra)</strike>
 - [x] Investigate `storageclasses.storage.k8s.io "fast" already exists` warning message
 - [ ] Investigate [Seed providers](http://github.com/kubernetes/examples/blob/master/cassandra/java/README.md)
 
