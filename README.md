@@ -4,6 +4,8 @@
 
 [Kubernetes](https://kubernetes.io/) is probably the premiere ___Orchestration framework___ for the __Cloud__.
 
+[For a short overview, the [Wikipedia article on Kubernetes](http://en.wikipedia.org/wiki/Kubernetes) is pretty good.]
+
 As of August, 2017 all of the major cloud providers belong to the [Cloud Native Computing Foundation (CNCF)](https://www.cncf.io/)
 which supports Kubernetes. In fact, Kubernetes was the first project to _graduate_ from the CNCF, in March 2018.
 
@@ -149,7 +151,7 @@ https://github.com/mramshaw/nomad-on-kubernetes
 
 https://github.com/mramshaw/istio-ingress-tutorial
 
-This last project can be run locally.
+These last projects can be run locally.
 
 #### Cloud Django (Running Python and Django in the cloud with gunicorn)
 
@@ -158,3 +160,7 @@ https://github.com/mramshaw/Cloud_Django
 #### Fun with Istio
 
 https://github.com/mramshaw/Fun-with-Istio
+
+#### Getting Familiar with Helm
+
+https://github.com/mramshaw/helm-test
