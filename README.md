@@ -55,6 +55,17 @@ Adrian Cockcroft on Cloud Native Computing and AWS:
 
 [Apparently 63 percent of Kubernetes workloads run on AWS.]
 
+Adrian Cockcroft on Cloud Native Computing and the CNCF:
+
+> For customers who are trying to track a fast-moving and confusing world, it’s helpful to regard CNCF
+> as a brand endorsement for a loose collection of interesting, sometimes competing projects, rather
+> than a single, integrated cloud native architecture. There’s no particular endorsement of any one
+> project over another for members of CNCF, or for users of projects.
+
+From:
+
+    http://aws.amazon.com/blogs/opensource/cloud-native-computing/
+
 While the Amazon ECS offering can be expected to continue to evolve, they also seem to be hedging their bets with Kubernetes.
 
 UPDATE: As of November 29, 2017 Amazon announced their new Containers-as-a-Service service
