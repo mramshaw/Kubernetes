@@ -43,9 +43,19 @@ has expressed interest in [Containerd](https://containerd.io/) and [Linkerd](htt
 [Istio](https://istio.io/)). Plus they seem to be experimenting with [kops](https://aws.amazon.com/blogs/compute/kubernetes-clusters-aws-kops/).
 
 Amazon of course have their own [ECS (EC2 Container Service)](https://aws.amazon.com/ecs/) which uses different terminology than Kubernetes
-(for instance I believe a __task__ approximates to a __pod__) but largely offers the same sorts of services. However the bulk of their
-customers appear to have opted for Kubernetes over ECS and while their ECS offering can be expected to continue to evolve, they also seem
-to be hedging their bets with Kubernetes.
+(for instance I believe a __task__ approximates to a __pod__) but largely offers the same sorts of services.
+
+However according to the CNCF the bulk of AWS customers appear to have opted for Kubernetes over ECS:
+
+    http://www.cncf.io/blog/2017/06/28/survey-shows-kubernetes-leading-orchestration-platform/
+
+Adrian Cockcroft on Cloud Native Computing and AWS:
+
+    http://www.linuxfoundation.org/blog/2018/02/adrian-cockcroft-convergence-cloud-native-computing-aws/
+
+[Apparently 63 percent of Kubernetes workloads run on AWS.]
+
+While the Amazon ECS offering can be expected to continue to evolve, they also seem to be hedging their bets with Kubernetes.
 
 UPDATE: As of November 29, 2017 Amazon announced their new Containers-as-a-Service service
 [Fargate](https://aws.amazon.com/about-aws/whats-new/2017/11/introducing-aws-fargate-a-technology-to-run-containers-without-managing-infrastructure/)
@@ -78,38 +88,40 @@ Using these will eat into your free credits, so remember to tear everything down
 
 As with __Docker__ it is possible to run __Kubernetes__ locally, which definitely has some advantages.
 
-For one thing, all of the cloud providers have extensive (and very cluttered) dashboards whereas the command _'__minikube dashboard__'_
+For one thing, all of the cloud providers have extensive (and very cluttered) dashboards whereas the command <kbd>minikube dashboard</kbd>
 will pop open a browser populated with a much less cluttered dashboard (making it much easier to see what is going on).
 
 ## Tools
 
 ![minikube logo with name](./minikube_logo_with_name.svg)
 
-There are 3 main tools, __kubeadm__, __kubectl__, and __minikube__.
+There are 3 main tools: `kubeadm`, `kubectl`, and `minikube`.
 
-For setting up local clusters or for provisioning VMs, __kubeadm__ is probably useful.
+For setting up local clusters or for provisioning VMs, `kubeadm` is probably useful.
 
 [If you go this route, make sure to use your *best* machine for the __master__ node,
 as it is a single point of failure (multi-master clusters *may* be in the works but
-are not yet a reality as of Kubernetes 1.8). If the ___etcd___ on the master node
+are not yet a reality as of Kubernetes 1.8). If the `etcd` on the master node
 breaks, not much else will work properly either. You should probably back up this
-'etcd' on a regular basis too. Maybe with a Kubernetes cronjob.]
+`etcd` on a regular basis too. Maybe with a Kubernetes cronjob.]
 
 However, for most purposes - including dealing with cloud providers (such as AWS, Azure,
-GCP, etc) - kubeadm is probably not necessary. It seems to be more of an installation
+GCP, etc) - `kubeadm` is probably not necessary. It seems to be more of an installation
 and administration tool.
 
-Having dabbled with all 3 of the listed providers, I can confirm that it is not necessary to install __kubectl__ locally either.
+Having dabbled with all 3 of the listed providers, I can confirm that it is not necessary to install `kubectl` locally either.
 
-[Each of the cloud providers recommends that you install their command-line toolset, which definitely make a lot of things simpler,
-however it ___should___ be possible to perform all needed functions from a web interface (navigating said dashboard is generally
-non-trivial however). When operating in the cloud you will use a provided kubectl, so no need to have it installed locally.]
+[Each of the cloud providers recommends that you install their CLI (or command-line toolset),
+which definitely makes a lot of things simpler, however it ___should___ be possible to perform
+all needed functions from a web interface (navigating said dashboard is generally non-trivial
+however). When operating in the cloud you will use a provided `kubectl`, so generally no need
+to have it installed locally.]
 
-For local familiarization, __minikube__ is the way to go - and it requires __kubectl__.
+For local familiarization, `minikube` is the way to go - and it requires `kubectl`.
 
-[Minikube is really the local equivalent of a cloud providers command-line toolset.]
+[Minikube is really the local equivalent of a cloud provider's command-line toolset.]
 
-Using __minikube__ also requires installing some form of virtualization; for linux either __VirtualBox__ or __KVM__ [I chose VirtualBox].
+Using `minikube` also requires installing some form of virtualization; for linux either __VirtualBox__ or __KVM__ [I chose VirtualBox].
 
 Using either of these probably requires enabling either __VT-x__ or __AMD-v__ hardware virtualization in your __BIOS__.
 
@@ -123,7 +135,7 @@ These are not in the same order that I went through them, as I progressed I had 
 better grounding on basic concepts) but the order below corresponds to what I think is the difficulty level; in other words the
 order presented is the order to follow.
 
-These all require __kubectl__ and __minikube__.
+These all require `kubectl` and `minikube`.
 
 #### Persistent Volume (Local)
 
