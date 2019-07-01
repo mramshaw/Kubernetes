@@ -119,7 +119,7 @@ to have it installed locally.]
 
 For local familiarization, `minikube` is the way to go - and it requires `kubectl`.
 
-[Minikube is really the local equivalent of a cloud provider's command-line toolset.]
+[`minikube` is really the local equivalent of a cloud provider's command-line toolset.]
 
 Using `minikube` also requires installing some form of virtualization; for linux either __VirtualBox__ or __KVM__ [I chose VirtualBox].
 
