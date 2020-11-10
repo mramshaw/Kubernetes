@@ -132,13 +132,25 @@ For local familiarization, `minikube` is the way to go - and it requires `kubect
 
 [`minikube` is really the local equivalent of a cloud provider's command-line toolset.]
 
-Using `minikube` also requires installing some form of virtualization; for linux either __VirtualBox__ or __KVM__ [I chose VirtualBox].
+There are three options for [deploying minikube](https://minikube.sigs.k8s.io/docs/drivers/):
+
+1. as a VM (virtual machine)
+2. as a container
+3. bare-metal
+
+The third option (bare-metal) is considered risky.
+
+The second option is the recommended one; it can use [Docker](http://github.com/mramshaw/Docker).
+
+Choosing the first option requires installing some form of virtualization; for linux either __VirtualBox__ or __KVM2__.
 
 Using either of these probably requires enabling either __VT-x__ or __AMD-v__ hardware virtualization in your __BIOS__.
 
 [Don't worry, the minikube startup process will tell you if this setting needs to be enabled or not. Hopefully not.]
 
 [In my BIOS this was __Advanced__ -> __CPU Configuration__ -> __Intel Virtualization Technology__]
+
+[While I previously used the VirtualBox option, the Docker option is now the recommended one - so that is what I use.]
 
 ## My Projects
 
