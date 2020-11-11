@@ -132,6 +132,8 @@ For local familiarization, `minikube` is the way to go - and it requires `kubect
 
 [`minikube` is really the local equivalent of a cloud provider's command-line toolset.]
 
+#### minikube options
+
 There are three options for [deploying minikube](https://minikube.sigs.k8s.io/docs/drivers/):
 
 1. as a VM (virtual machine)
@@ -152,6 +154,22 @@ Using either of these probably requires enabling either __VT-x__ or __AMD-v__ ha
 
 [While I previously used the VirtualBox option, the Docker option is now the recommended one - so that is what I use.]
 
+#### minikube configuration
+
+Which option is chosen above may affect how easy it is to configure minikube's limits.
+
+VirtualBox provides a nice GUI:
+
+* [Increase minikube's working memory](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20Cassandra%20Database#increase-minikubes-working-memory)
+* [Increase minikube's processors](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20Cassandra%20Database#increase-minikubes-processors)
+
+If using Docker, the command line must be used:
+
+* [Increase minikube's working memory](http://github.com/mramshaw/replicouchcluster#increase-minikubes-working-memory)
+* [Increase minikube's processors](http://github.com/mramshaw/replicouchcluster#increase-minikubes-processors)
+
+In the end, both get the job done, so it boils down to personal preference.
+
 ## My Projects
 
 These are not in the same order that I went through them, as I progressed I had to backtrack from time to time (when I needed a
@@ -164,7 +182,7 @@ These all require `kubectl` and `minikube`.
 
 https://github.com/mramshaw/Kubernetes/tree/master/Persistent%20Volume%20(Local)
 
-The following also require a __cloud provider__ account with its __CLI tools__ installed.
+Most of the following also require a __cloud provider__ account with its __CLI tools__ installed.
 
 #### Single MySQL (Persistent Volume)
 
@@ -177,6 +195,14 @@ https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic
 #### Replicated Cassandra Database
 
 https://github.com/mramshaw/Kubernetes/tree/master/Replicated%20Cassandra%20Database
+
+[This example is run entirely locally with `minikube`.]
+
+#### Replicated Couchbase Cluster
+
+https://github.com/mramshaw/replicouchcluster
+
+[This example is run entirely locally with `minikube`.]
 
 #### Nomad on Kubernetes (Combining Kubernetes with Hashicorp's Nomad and Vault)
 

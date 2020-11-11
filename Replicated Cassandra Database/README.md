@@ -12,7 +12,7 @@ Next we will scale up the replica count and check for evidence of ___bootstrappi
 
 Finally, we will tear everything down and clean up.
 
-[Note that this example is Debian-based and uses the OpenJDK 8 JRE rather than a proprietary Java (see [Dockerfile](./Dockerfile)).]
+Note that this example is Debian-based and uses the OpenJDK 8 JRE rather than a proprietary Java (see [Dockerfile](./Dockerfile)).
 
 This exercise follows on from my [Replicated MySQL (Dynamic Volumes)](http://github.com/mramshaw/Kubernetes/tree/master/Replicated%20MySQL%20(Dynamic%20Volumes)) exercise.
 
@@ -25,7 +25,7 @@ There I  set up a `keyspace` and a `column family`, insert some data into the `c
 
 ## Contents
 
-The content are as follows:
+The contents are as follows:
 
 * [Prerequisites](#prerequisites)
 * [Method](#Method)
