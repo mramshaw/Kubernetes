@@ -168,7 +168,7 @@ If using Docker, the command line must be used:
 * [Increase minikube's working memory](http://github.com/mramshaw/replicouchcluster#increase-minikubes-working-memory)
 * [Increase minikube's processors](http://github.com/mramshaw/replicouchcluster#increase-minikubes-processors)
 
-In the end, both get the job done, so it boils down to personal preference.
+In the end both get the job done so it boils down to personal preference.
 
 ## My Projects
 

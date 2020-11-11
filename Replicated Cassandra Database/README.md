@@ -71,15 +71,17 @@ In this document we will discuss the first option.
 
 The following steps may not be absolutely necessary, but will probably save time and aggravation.
 
+Cassanda is a ___beast___, so first we should increase minikube's limits.
+
 #### Increase minikube's working memory
 
-Cassanda is a ___beast___, so we will need to allocate ___lots___ of memory:
+Allocate lots of virtual memory:
 
 ![Minikube memory](images/Minikube_memory.png)
 
 #### Increase minikube's processors
 
-Likewise we will need to allocate ___lots___ of processors:
+Allocate ___lots___ of processors:
 
 ![Minikube processors](images/Minikube_processors.png)
 
